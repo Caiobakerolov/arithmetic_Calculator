@@ -1,5 +1,10 @@
 <script setup>
-import { reactive, computed } from 'vue';
+
+  import { reactive, computed } from 'vue';
+
+  import CompHeader from './components/CompHeader.vue'
+  import CompForm from './components/CompForm.vue'
+  import CompResult from './components/CompResult.vue'
 
   const state = reactive({
     number1: '',
@@ -18,43 +23,34 @@ import { reactive, computed } from 'vue';
       case 'division':
         return state.number2 !== 0 ? state.number1 / state.number2 : 'Cannot divide by zero';
       default:
-      return 0;  
+        return 0;  
     }
   })
-  
+
+  const updateNumber1 = (val) => {
+    state.number1 = val
+  }
+
+  const updateNumber2 = (val) => {
+    state.number2 = val
+  }
+
+  const updateOperation = (val) => {
+    state.operation = val
+  }  
 </script>
 
 <template>
   <div class="container">
-    <header class="p-5 mb-4 mt-4 text-center bg-light rounded-3">
-        <h1>arithmetic calculator</h1>
-        <p>Do your calculation</p>
-    </header>
-    <form>
-      <div class="row d-flex">
-        <div class="col d-flex gap-2">
-          <input type="number" v-model.number="state.number1" placeholder="Enter your number first" class="form-control">
-          <input type="number" v-model.number="state.number2" placeholder="Enter your number second" class="form-control">
-        </div>
-        <div class="col-md-2">
-          <select v-model="state.operation" class="form-control">            
-            <option value="sum">Sum</option>
-            <option value="subtraction">Subtraction</option>
-            <option value="multiplication">Multiplication</option>
-            <option value="division">Division</option>
-          </select>
-        </div>        
-      </div>
-    </form>    
-    <ul class="list-group mt-4">
-      <h2>Result</h2>
-      <li class="list-group-item">
-        <p class="result text-center"> {{ result }}</p>
-      </li>
-    </ul>
+    <CompHeader />
+    <CompForm
+      :number1="state.number1"
+      :number2="state.number2"
+      :operation="state.operation"
+      @update:number1="updateNumber1"
+      @update:number2="updateNumber2"
+      @update:operation="updateOperation"
+    />
+    <CompResult :result="result"/>    
   </div>
 </template>
-
-<style scoped>
-
-</style>
